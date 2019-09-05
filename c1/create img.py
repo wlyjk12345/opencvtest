@@ -21,7 +21,7 @@ m4 = np.zeros([512,512], np.uint8)
 cv.imshow("m4", m4)
 
 m5 = np.ones(shape=[512,512,3], dtype=np.uint8)
-m5[:0,:,0] = 255
+m5[:,:,2] = 255   #  2  stand for channel
 cv.imshow("m5", m5)
 
 

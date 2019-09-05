@@ -10,7 +10,7 @@ cv2.imshow("Imagea",gray)
 
 k = cv2.waitKey(0)
 #释放窗口
-if k==27:  #如果输入ESC退出
+if k==27:
+   # 如果输入ESC退出
    cv2.destroyAllWindows()
-
 
