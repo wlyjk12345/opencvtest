@@ -1,7 +1,7 @@
 import cv2
-img = cv2.imread("E:\DSC00006.jpg",cv2.IMREAD_COLOR)
+img = cv2.imread("E:\p2.jpg",cv2.IMREAD_COLOR)
 cv2.namedWindow("Imagea",cv2.WINDOW_NORMAL)
-cv2.imshow("Imagea",gray)
+cv2.imshow("Imagea",img)
 
 
 
