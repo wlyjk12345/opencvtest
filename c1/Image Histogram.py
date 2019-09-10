@@ -26,8 +26,8 @@ def image_hist(image):
     cv.imshow("onput", image)
     color = ('blue', 'green', 'red')
     for i, color in enumerate(color):
-        hist = cv.calcHist([image], [i], None, [256], [0, 256])
-        plt.plot(hist, color=color)
+        hist = cv.calcHist([image], [i], None, [256], [0, 256])    #void calcHist(const Mat* arrays输入的图像的指针, int narrays输入的图像的个数。, const int* channels, InputArray mask, OutputArrayhist,
+        plt.plot(hist, color=color)                                #int dims, const int* histSize, const float** ranges, bool uniform=true, bool accumulate=false )
         plt.xlim([0, 256])
     plt.show()
 
