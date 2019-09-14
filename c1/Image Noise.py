@@ -44,7 +44,7 @@ src = cv.imread("E:\p1.png")
 cv.imshow("input", src)
 h, w = src.shape[:2]
 src = gaussian_noise(src)
-
+'''
 result1 = cv.blur(src, (5, 5))
 cv.imshow("result-1", result1)
 
@@ -54,10 +54,17 @@ cv.imshow("result-2", result2)
 result3 = cv.medianBlur(src, 5)
 cv.imshow("result-3", result3)
 
-result4 = cv.fastNlMeansDenoisingColored(src, None, 15, 15, 10, 30)   #使用对象为彩色图    cv2.fastNlMeansDenoising() 使用对象为灰度图
+result4 = cv.fastNlMeansDenoisingColored(src, None, 15, 15, 10, 30)   #从彩色图像中去除噪声    cv2.fastNlMeansDenoising() 使用对象为灰度图
 cv.imshow("result-4", result4)
-
-
+'''
+dst = cv.bilateralFilter(src, 0, 100, 10)        #bilateralFilter(src, d, sigmaColor, sigmaSpace[, dst[, borderType]]) #双边滤波
+ #- d:   在过滤期间使用的每个像素邻域的直径 sigmaColor: 色彩空间的标准方差，一般尽可能大。sigmaSpace: 坐标空间的标准方差(像素单位)，一般尽可能小。
+dst = cv.pyrMeanShiftFiltering(src, 15, 30, termcrit=(cv.TERM_CRITERIA_MAX_ITER+cv.TERM_CRITERIA_EPS, 5, 1))
+result = np.zeros([h, w*2, 3], dtype=src.dtype)
+result[0:h,0:w,:] = src
+result[0:h,w:2*w,:] = dst
+result = cv.resize(result, (w*2,h ))
+cv.imshow("result", result)
 
 cv.waitKey(0)
 cv.destroyAllWindows()

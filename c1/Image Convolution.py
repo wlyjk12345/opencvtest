@@ -35,7 +35,7 @@ custom_blur(src)
 
 dst2 = cv.GaussianBlur(src, (5, 5), sigmaX=15)# void GaussianBlur(InputArray src, OutputArray dst, Size ksize, double sigmaX, double sigmaY=0, int borderType=BORDER_DEFAULT);
 dst3 = cv.GaussianBlur(src, (0, 0), sigmaX=15)# ksize，高斯内核，sigmaX，表示高斯核函数在X方向的的标准偏差，borderType，用于推断图像外部像素的某种边界模式
-dst5 = cv.medianBlur(src,5)
+dst5 = cv.medianBlur(src,5) #中值滤波
 cv.imshow("gaussian ksize=5", dst2) #高斯滤波，高斯模糊
 cv.imshow("gaussian sigmax=15", dst3)
 cv.imshow("medianBlur",dst5)  #中值模糊
