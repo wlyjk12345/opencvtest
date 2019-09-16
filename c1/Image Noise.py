@@ -59,7 +59,10 @@ cv.imshow("result-4", result4)
 '''
 dst = cv.bilateralFilter(src, 0, 100, 10)        #bilateralFilter(src, d, sigmaColor, sigmaSpace[, dst[, borderType]]) #双边滤波
  #- d:   在过滤期间使用的每个像素邻域的直径 sigmaColor: 色彩空间的标准方差，一般尽可能大。sigmaSpace: 坐标空间的标准方差(像素单位)，一般尽可能小。
-dst = cv.pyrMeanShiftFiltering(src, 15, 30, termcrit=(cv.TERM_CRITERIA_MAX_ITER+cv.TERM_CRITERIA_EPS, 5, 1))
+dst = cv.pyrMeanShiftFiltering(src, 15, 30, termcrit=(cv.TERM_CRITERIA_MAX_ITER+cv.TERM_CRITERIA_EPS, 5, 1))   #均值迁移模糊  3chanel
+#( InputArray src, OutputArray dst,,double sp 空间窗口半径, double sr  颜色窗口半径, int maxLevel = 1, TermCriteria termcrit=TermCriteria(TermCriteria::MAX_ITER+TermCriteria::EPS,5,1)
+dst = cv.edgePreservingFilter(src, sigma_s=100, sigma_r=0.4, flags=cv.RECURS_FILTER)  #保边滤波器
+
 result = np.zeros([h, w*2, 3], dtype=src.dtype)
 result[0:h,0:w,:] = src
 result[0:h,w:2*w,:] = dst
