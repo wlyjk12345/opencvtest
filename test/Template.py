@@ -1,7 +1,7 @@
 import cv2 as cv
 import numpy as np
 import matplotlib.pyplot as plt
-img = cv.imread("E:\p8.jpg",cv.IMREAD_COLOR)
+img = cv.imread("E:\k3.jpg",cv.IMREAD_COLOR)
 cv.namedWindow("result",cv.WINDOW_NORMAL)
 
 shape_op = np.array([[0, -1, 0],
@@ -23,7 +23,7 @@ result1 = gray
 ret, th = cv.threshold(binary, 165, 255, cv.THRESH_BINARY)
 
 #t= cv.GaussianBlur(th, (9, 9), 0)
-t = cv.medianBlur(th, 9)
+t = cv.medianBlur(th, 7)
 edges = cv.Canny((t),1,10)
 '''
 dst = cv.Laplacian(result1, cv.CV_32F, ksize=3, delta=127) #
@@ -34,14 +34,15 @@ sharpen_image = cv.filter2D(dst, cv.CV_32F, sharpen_op)
 sharpen_image = cv.convertScaleAbs(sharpen_image)
 '''
 #edges = cv.Canny((dst),1,10)
-
+contours, hierarchy = cv.findContours(edges, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+cv.drawContours(t,contours,-1,(0,0,255),3)
 h, w = gray.shape[:2]
 result = np.zeros([h, w*3], dtype=gray.dtype)
 result[0:h,0:w] = gray
-result[0:h,w:2*w] =   binary#result1
+result[0:h,w:2*w] = t#result1
 result[0:h,2*w:3*w] = edges
 result = cv.resize(result, (w*3,h ))
-
+cv.imwrite('E:\contours.jpg', result)
 cv.imshow("result", result)
 ret, th1 = cv.threshold(binary, 170, 255, cv.THRESH_BINARY)
 ret, th2 = cv.threshold(binary, 127, 255, cv.THRESH_BINARY_INV)

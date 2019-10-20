@@ -4,6 +4,11 @@ import matplotlib.pyplot as plt
 img = cv.imread("E:\p1.png")
 cv.namedWindow("input", cv.WINDOW_AUTOSIZE)
 cv.imshow("input", img)
+blurred = cv.pyrMeanShiftFiltering(img, 10, 100)  # 先均值迁移去噪声，色彩层面的平滑滤波，它可以中和色彩分布相近的颜色，平滑色彩细节，侵蚀掉面积较小的颜色区域
+gray = cv.cvtColor(blurred, cv.COLOR_BGR2GRAY)
+t, binary = cv.threshold(gray, 0, 255, cv.THRESH_BINARY | cv.THRESH_OTSU)#自动阈值
+cv.imshow('bi',binary)
+cv.imshow('b',blurred)
 '''
 blur_op = np.ones([5, 5], dtype=np.float32)/25.
 shape_op = np.array([[0, -1, 0],
