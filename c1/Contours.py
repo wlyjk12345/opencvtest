@@ -73,6 +73,12 @@ for c in range(len(contours)):
     if dist < 1:
         cv.drawContours(src, contours, c, (255, 0, 255), 2, 8)
     print("dist %f"%(dist))
+for c in range(len(contours)):
+    # 椭圆拟合
+    (cx, cy), (a, b), angle  = cv.fitEllipse(contours[c])  #cv2.ellipse(img, center, axes, angle, startAngle, endAngle, color[, thickness[, lineType[, shift]]])
+    # 绘制椭圆
+    cv.ellipse(src, (np.int32(cx), np.int32(cy)),(np.int32(a/2), np.int32(b/2)), angle, 0, 360, (0, 0, 255), 2, 8, 0)
+cv.namedWindow("d",cv.WINDOW_NORMAL)
 cv.imshow('d',src)
 
 #cv.drawContours(gray,contours,-1,(0,0,255),3)
