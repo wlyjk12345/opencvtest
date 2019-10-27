@@ -15,6 +15,7 @@ gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
 #预处理
 def contours_info(_):
     gray = cv.cvtColor(_, cv.COLOR_BGR2GRAY)
+    gray = cv.medianBlur(gray, 9)
     ret, binary = cv.threshold(gray, 0, 255, cv.THRESH_OTSU | cv.THRESH_BINARY)
     canny = cv.Canny((binary),10,100)
     #cv.imshow(str(_),canny)
