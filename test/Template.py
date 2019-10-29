@@ -2,75 +2,49 @@ import cv2 as cv
 import numpy as np
 import matplotlib.pyplot as plt
 from datetime import datetime
-img = cv.imread("E:\p9.jpg",cv.IMREAD_COLOR)
+import STANDERD
+
+img = cv.imread("E:\k2.jpg",cv.IMREAD_COLOR)
 cv.namedWindow("result",cv.WINDOW_NORMAL)
+
 # 预处理
 shape_op = np.array([[0, -1, 0],
                    [-1, 5, -1],
                    [0, -1, 0]], np.float32)
 img = cv.filter2D(img, -1, shape_op)
-#img = cv.edgePreservingFilter(img, sigma_s=100, sigma_r=0.4, flags=cv.RECURS_FILTER)  #保边滤波器
 gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
-#gray= cv.medianBlur(gray, 9)
-#result1 = cv.GaussianBlur(gray, (9, 9), 0)
-binary =  gray
-result1 = gray
-#dst = cv.pyrMeanShiftFiltering(img, 15, 30, termcrit=(cv.TERM_CRITERIA_MAX_ITER+cv.TERM_CRITERIA_EPS, 5, 1))
-
-#se = cv.getStructuringElement(cv.MORPH_RECT, (5, 5), (-1, -1))# 顶帽操作
-#binary = cv.morphologyEx(result1, cv.MORPH_BLACKHAT, se)
-ret, th = cv.threshold(binary, 127, 255, cv.THRESH_BINARY)
-#t= cv.GaussianBlur(th, (9, 9), 0)
-t = cv.medianBlur(th, 5)
-cv.imshow('d',t)
-# 边缘
+ret, binary= cv.threshold(gray, 127, 255, cv.THRESH_BINARY)
+t = cv.medianBlur(binary, 5)
+height, width = img.shape[:2]
+# 边
 edges = cv.Canny((t),1,10)
-'''
-dst = cv.Laplacian(result1, cv.CV_32F, ksize=3, delta=127) #
-img = cv.convertScaleAbs(dst)
+contours1, hierarchy = cv.findContours(edges, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+contours, hierarchy = cv.findContours(binary, cv.RETR_LIST, cv.CHAIN_APPROX_SIMPLE)
+for c in range(len(contours)):
+    area = cv.contourArea(contours[c]) # 计算面积
+    x, y, w, h = cv.boundingRect(contours[c]);
+    arclen = cv.arcLength(contours[c], True)  # 计算弧长， True表示闭合区域
+    if h > (height//2):
+        continue
+    if area < 150 or arclen < 150:
+        continue
+    cv.drawContours(binary, contours, c, (0), 2, 8)
+    cv.rectangle(img, (x, y), (x+w, y+h), (0, 255, 255), 1, 8, 0);
+    cv.putText(img, "bad", (x, y - 2), cv.FONT_HERSHEY_SIMPLEX, .5, (0, 255, 0), 2)
 
-sharpen_op = np.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]], dtype=np.float32)
-sharpen_image = cv.filter2D(dst, cv.CV_32F, sharpen_op)
-sharpen_image = cv.convertScaleAbs(sharpen_image)
-'''
-#edges = cv.Canny((dst),1,10)
-contours, hierarchy = cv.findContours(edges, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
-cv.drawContours(t,contours,-1,color = (255, 255, 255),thickness = -1)
+cv.drawContours(img,contours1,-1,color = (0, 255, 255),thickness = -1)
+cv.imshow('d',img)
 
 # 成图
-h, w = gray.shape[:2]
-result = np.zeros([h, w*3], dtype=gray.dtype)
-result[0:h,0:w] = gray
-result[0:h,w:2*w] = t#result1
-result[0:h,2*w:3*w] = edges
-result = cv.resize(result, (w*3,h ))
+result = STANDERD.result_out(gray, edges, t)
 
 # 记录出图
-''''
-now = datetime.now()
-a = now.strftime('%d%H%M')
-a ='E:\\'  + a + '.jpg '
-cv.imwrite(a, result)
-'''
+#STANDERD.outdraw(result)
+cv.imwrite("binary.png", img)
 cv.imshow("result", result)
 
-
-#  阈值测试
-ret, th1 = cv.threshold(binary, 127, 255, cv.THRESH_BINARY)
-ret, th2 = cv.threshold(binary, 127, 255, cv.THRESH_BINARY_INV)
-ret, th3 = cv.threshold(binary, 127, 255, cv.THRESH_TRUNC)
-ret, th4 = cv.threshold(binary, 127, 255, cv.THRESH_TOZERO)
-ret, th5 = cv.threshold(binary, 127, 255, cv.THRESH_TOZERO_INV)
-titles = ['Original', 'BINARY', 'BINARY_INV', 'TRUNC', 'TOZERO', 'TOZERO_INV']
-images = [img, th1, th2, th3, th4, th5]
-# 使用Matplotlib显示
-for i in range(6):
-    plt.subplot(2, 3, i + 1)
-    plt.imshow(images[i], 'gray')
-    plt.title(titles[i], fontsize=8)
-    plt.xticks([]), plt.yticks([])  # 隐藏坐标轴
-plt.show()
-
+#  阈值测试 STANDER.py
+STANDERD.thre(binary,img)
 
 k = cv.waitKey(0)
 if k==27:
