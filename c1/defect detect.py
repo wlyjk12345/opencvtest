@@ -32,7 +32,7 @@ def detect_defect(binary, boxes, tpl):
     return defect_rois
 
 
-src = cv.imread("E:/k2.jpg")
+src = cv.imread("E:/k4.jpg")
 cv.namedWindow("input", cv.WINDOW_AUTOSIZE)
 cv.imshow("input", src)
 
@@ -86,6 +86,5 @@ for dx, dy, dw, dh in rects:
 
 cv.imshow("result", src)
 cv.imwrite("binary2.png", src)
-
 cv.waitKey(0)
 cv.destroyAllWindows()
