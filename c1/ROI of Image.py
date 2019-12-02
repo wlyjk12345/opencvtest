@@ -1,7 +1,7 @@
 import cv2 as cv
 import numpy as np
 
-src = cv.imread("E:\k2.jpg")
+src = cv.imread("E:\e/p2.jpg")
 cv.namedWindow("input", cv.WINDOW_NORMAL)
 cv.imshow("m4",src)
 h, w = src.shape[:2]
@@ -29,7 +29,7 @@ cv.imshow("copy roi", image)
 
 
 # example with ROI - generate mask
-src2 = cv.imread("E:\p1.png")
+src2 = cv.imread("E:\e/p1.png")
 cv.imshow("src2", src2)
 hsv = cv.cvtColor(src2, cv.COLOR_BGR2HSV)
 mask = cv.inRange(hsv, (35, 43, 46), (99, 255, 255))
